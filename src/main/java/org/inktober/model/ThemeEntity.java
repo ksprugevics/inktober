@@ -1,6 +1,5 @@
 package org.inktober.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,24 +15,20 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "submission")
+@Table(name = "theme")
 @Getter
 @Setter
 @Builder
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class SubmissionEntity {
+public class ThemeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long submissionId;
-    private long uploadTimestamp;
-    private String comment;
-    @ToString.Exclude
-    @Column(columnDefinition = "BLOB")
-    private byte[] image;
+    private long themeId;
+    private String description;
     @ManyToOne
-    @JoinColumn(name = "theme_id")
-    private ThemeEntity theme;
+    @JoinColumn(name = "event_id")
+    private EventEntity event;
 }

@@ -2,6 +2,7 @@ package org.inktober.service;
 
 import lombok.RequiredArgsConstructor;
 import org.inktober.model.SubmissionEntity;
+import org.inktober.model.ThemeEntity;
 import org.inktober.repository.SubmissionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,7 +22,8 @@ public class SubmissionService {
     public SubmissionEntity saveSubmission(String description, MultipartFile image) throws IOException {
         SubmissionEntity submission = SubmissionEntity.builder()
                 .uploadTimestamp(System.currentTimeMillis())
-                .description(description)
+                .theme(ThemeEntity.builder().themeId(1).build())
+                .comment(description)
                 .image(image.getBytes())
                 .build();
         return submissionRepository.save(submission);

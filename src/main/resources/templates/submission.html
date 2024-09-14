@@ -5,8 +5,9 @@
 </head>
 <body>
 <h2>Theme:</h2>
-<h3 th:text="${submission.description}"></h3>
+<h3 th:text="${submission.comment}"></h3>
 <h3 th:text="${submission.uploadTimestamp}"></h3>
+<h3 th:text="${submission.theme}"></h3>
 <img th:src="@{/submission/{id}/media(id=${submission.submissionId})}" alt="Submission Image"/>
 </body>
 </html>
