@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Submission</title>
+</head>
+<body>
+<div th:each="sub: ${submissions}">
+    <h2 th:text="${sub.theme.description}"></h2>
+    <h3 th:text="${sub.comment}"></h3>
+    <h3 th:text="${sub.uploadTimestamp}"></h3>
+    <img th:src="@{/submission/{id}/media(id=${sub.submissionId})}" alt="Submission Image"/>
+</div>
+</body>
+</html>
