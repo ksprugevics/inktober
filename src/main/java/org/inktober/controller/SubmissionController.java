@@ -24,11 +24,6 @@ public class SubmissionController {
 
     private final SubmissionService submissionService;
 
-    @GetMapping
-    public String home() {
-        return "home";
-    }
-
     @GetMapping("/{id}")
     public String getSubmission(@PathVariable Long id, Model model) {
         try {
@@ -39,7 +34,7 @@ public class SubmissionController {
         }
     }
 
-    @GetMapping("/{id}/media")
+    @GetMapping("/{id}/image")
     @ResponseBody
     public ResponseEntity<byte[]> getSubmissionImage(@PathVariable Long id) {
         try {
@@ -55,10 +50,11 @@ public class SubmissionController {
         return "uploadForm";
     }
 
+    // todo: validation
     @PostMapping("/upload")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file, Model model) {
+    public String handleFileUpload(@RequestParam("comment") String comment, @RequestParam("file") MultipartFile file, Model model) {
         try {
-            submissionService.saveSubmission("Test", file);
+            submissionService.saveSubmission(comment, file);
             model.addAttribute("message", "Upload successful");
         } catch (IOException e) {
             model.addAttribute("message", "Upload failed");

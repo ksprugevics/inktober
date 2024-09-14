@@ -8,6 +8,6 @@
 <h3 th:text="${submission.comment}"></h3>
 <h3 th:text="${submission.uploadTimestamp}"></h3>
 <h3 th:text="${submission.theme}"></h3>
-<img th:src="@{/submission/{id}/media(id=${submission.submissionId})}" alt="Submission Image"/>
+<img th:src="@{/submission/{id}/image(id=${submission.submissionId})}" alt="Submission Image"/>
 </body>
 </html>
