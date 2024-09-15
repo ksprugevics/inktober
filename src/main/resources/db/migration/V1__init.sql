@@ -8,6 +8,7 @@ CREATE TABLE event (
 CREATE TABLE theme (
     theme_id INTEGER PRIMARY KEY AUTOINCREMENT,
     description TEXT NOT NULL,
+    date_for DATE NOT NULL,
     event_id INTEGER NOT NULL,
     FOREIGN KEY (event_id) REFERENCES event(event_id)
 );

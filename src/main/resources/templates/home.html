@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Inktober 2024</title>
+    <title th:text="${event}"></title>
 </head>
 <body>
-<h1>Inktober 2024</h1>
+<h1>Welcome to:</h1>
+<h1 th:text="${event}">Welcome to:</h1>
+<h2>Today's theme is:</h2>
+<h2 th:text="${theme.description}"></h2>
+<button onclick="window.location.href='/submission/upload';">Upload your submission</button>
+<button onclick="window.location.href='/collection';">Collection</button>
 </body>
 </html>

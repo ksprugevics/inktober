@@ -4,10 +4,11 @@
     <title>Submission</title>
 </head>
 <body>
+<button onclick="window.location.href='/';">Back</button>
 <h2>Theme:</h2>
+<h2 th:text="${submission.theme.description}"></h2>
 <h3 th:text="${submission.comment}"></h3>
-<h3 th:text="${submission.uploadTimestamp}"></h3>
-<h3 th:text="${submission.theme}"></h3>
+<h3 th:text="${submission.theme.dateFor}"></h3>
 <img th:src="@{/submission/{id}/image(id=${submission.submissionId})}" alt="Submission Image"/>
 </body>
 </html>

@@ -1,6 +1,7 @@
 package org.inktober.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.inktober.config.EventConfig;
 import org.inktober.service.CollectionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,9 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class CollectionController {
 
     private final CollectionService collectionService;
+    private final EventConfig eventConfig;
 
-    @GetMapping("/{id}")
-    public String getCollection(@PathVariable Long id, Model model) {
+    @GetMapping(value = {"", "/{id}"})
+    public String getCollection(@PathVariable(required = false) Integer id, Model model) {
+        if (id == null) {
+            id = eventConfig.activeEvent.id;
+        }
+
         try {
             model.addAttribute("submissions", collectionService.getSubmissionsByEvent(id));
             return "collection";

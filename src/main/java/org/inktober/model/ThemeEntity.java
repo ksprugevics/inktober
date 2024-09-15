@@ -1,5 +1,6 @@
 package org.inktober.model;
 
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,6 +14,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.inktober.util.LocalDateConverter;
+
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "theme")
@@ -28,6 +32,8 @@ public class ThemeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long themeId;
     private String description;
+    @Convert(converter = LocalDateConverter.class)
+    private LocalDate dateFor;
     @ManyToOne
     @JoinColumn(name = "event_id")
     private EventEntity event;
