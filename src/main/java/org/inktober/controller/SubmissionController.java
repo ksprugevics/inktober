@@ -50,16 +50,20 @@ public class SubmissionController {
         return "uploadForm";
     }
 
-    // todo: validation
     @PostMapping("/upload")
-    public String handleFileUpload(@RequestParam("comment") String comment, @RequestParam("file") MultipartFile file, Model model) {
-        try {
-            submissionService.saveSubmission(comment, file);
-            model.addAttribute("message", "Upload successful");
-        } catch (IOException e) {
-            model.addAttribute("message", "Upload failed");
+    @ResponseBody
+    public ResponseEntity<String> handleFileUpload(@RequestParam(value = "comment", required = false) String comment,
+                                                   @RequestParam(value = "wasFun") Boolean wasFun,
+                                                   @RequestParam(value= "file", required = false) MultipartFile file) {
+        if (file == null && (comment == null || comment.isEmpty())) {
+            return ResponseEntity.badRequest().body("{\"message\": \"Either 'file' or 'comment' must be present.\"}");
         }
 
-        return "uploadForm";
+        try {
+            submissionService.saveSubmission(comment, wasFun, file);
+            return ResponseEntity.ok("{\"message\": \"Upload successful\"}");
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body("{\"message\": \"Upload failed\"}");
+        }
     }
 }

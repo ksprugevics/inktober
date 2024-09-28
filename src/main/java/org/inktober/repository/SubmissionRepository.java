@@ -11,4 +11,5 @@ public interface SubmissionRepository extends JpaRepository<SubmissionEntity, Lo
 
     @Query("SELECT s FROM SubmissionEntity s WHERE s.theme.event.eventId = :eventId")
     List<SubmissionEntity> findByEventId(@Param("eventId") long eventId);
+    List<SubmissionEntity> findByThemeThemeId(@Param("themeId") long themeId);
 }

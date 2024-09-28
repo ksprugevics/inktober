@@ -18,6 +18,7 @@ CREATE TABLE submission (
     upload_timestamp INTEGER NOT NULL,
     comment TEXT,
     image BLOB,
+    was_fun TINYINT(1),
     theme_id INTEGER NOT NULL,
     FOREIGN KEY (theme_id) REFERENCES theme(theme_id)
 );

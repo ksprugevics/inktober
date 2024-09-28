@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum EventClassifier {
 
+    NONE         (-1, "See you next year"),
     INKTOBER_2024(1, "Inktober 2024"),
     INKTOBER_2025(2, "Inktober 2025");
 
@@ -19,6 +20,6 @@ public enum EventClassifier {
             }
         }
 
-        return null;
+        return NONE;
     }
 }

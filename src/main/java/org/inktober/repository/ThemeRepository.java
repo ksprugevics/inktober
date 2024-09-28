@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ThemeRepository extends JpaRepository<ThemeEntity, Long> {
-    public List<ThemeEntity> findByEventEventId(long eventId);
+    List<ThemeEntity> findByEventEventId(long eventId);
 }

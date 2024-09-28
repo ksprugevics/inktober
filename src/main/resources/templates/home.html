@@ -2,13 +2,268 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title th:text="${event}"></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picnic">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .main-content {
+            margin-top: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            padding-bottom: 20px;
+        }
+
+        .title {
+            font-size: 4em;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .theme {
+            font-size: 2.5em;
+            text-align: center;
+            font-weight: bold;
+            background-color: #f0f0f2;
+            border-radius: 10px;
+            margin-bottom: 50px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            width: 700px;
+        }
+
+        .uploadButton {
+            font-size: 1.5em;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .submission-details {
+            font-size: 1.5em;
+            text-align: center;
+        }
+
+        .disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .success-message {
+            color: green;
+        }
+
+        .error-message {
+            color: red;
+        }
+
+        .submission-card {
+            font-size: 1em;
+            text-align: center;
+            font-weight: bold;
+            background-color: #f0f0f2;
+            border-radius: 10px;
+            margin-bottom: 50px;
+            padding-top: 30px;
+            padding-bottom: 30px;
+            width: 700px;
+        }
+
+        .submission-image {
+            max-width: 500px;
+            height: auto;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .fullscreen-modal {
+            display: none;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            height: calc(100% - 60px);
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: flex;
+        }
+
+        .fullscreen-image {
+            max-width: 90%;
+            max-height: 90%;
+            margin: auto;
+        }
+
+        .separator {
+            border-top: 2px solid #ccc;
+            width: 80%;
+            margin: 30px 0;
+        }
+
+        .navbar-date {
+            margin-top: 14px;
+            margin-left: 10px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .navbar-theme {
+            margin-top: 14px;
+            margin-left: 10px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            const today = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const dateString = today.toLocaleDateString(undefined, options);
+            $('#todayDate').text(dateString);
+
+            $('#fullscreenModal').hide();
+            $('.dropimage').each(function() {
+                $(this).on('change', function(e) {
+                    var inputfile = $(this)[0];
+                    var reader = new FileReader();
+                    reader.onloadend = function() {
+                        $(inputfile).css('background-image', 'url(' + reader.result + ')');
+                    }
+                    reader.readAsDataURL(e.target.files[0]);
+                });
+            });
+
+            $('#uploadButtonYes').on('click', async function() {
+                $('#uploadButtonYes').addClass('disabled').prop('disabled', true);
+
+                const fileInput = $('#fileInput')[0];
+                const commentInput = $('#commentInput').val().trim();
+                const funCheckbox = $('#wasFunInput').is(':checked');
+                const file = fileInput.files[0];
+
+                if (!file && commentInput === "") {
+                    $('#responseMessage').removeClass('success-message').addClass('error-message').text("Please provide either a file or a comment.");
+                    $('#uploadButtonYes').removeClass('disabled').prop('disabled', false);
+                    return;
+                }
+
+                const formData = new FormData();
+                if (file) {
+                    formData.append('file', file);
+                }
+                formData.append('comment', commentInput);
+                formData.append('wasFun', funCheckbox);
+
+                try {
+                    const response = await fetch('/submission/upload', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        $('#responseMessage').removeClass('error-message').addClass('success-message').text("Upload successful!");
+                        setTimeout(() => {
+                            location.reload();
+                        }, 2000);
+                    } else {
+                        $('#responseMessage').removeClass('success-message').addClass('error-message').text(result.message || "Upload failed.");
+                        $('#uploadButtonYes').removeClass('disabled').prop('disabled', false);
+                    }
+                } catch (error) {
+                    $('#responseMessage').removeClass('success-message').addClass('error-message').text("Upload failed.");
+                    $('#uploadButtonYes').removeClass('disabled').prop('disabled', false);
+                }
+            });
+
+            $('#submissionImage').on('click', function() {
+                const imgSrc = $(this).attr('src');
+                $('#fullscreenImage').attr('src', imgSrc);
+                $('#fullscreenModal').fadeIn();
+            });
+
+            $('#fullscreenModal').on('click', function() {
+                $(this).fadeOut();
+            });
+        });
+    </script>
 </head>
+
 <body>
-<h1>Welcome to:</h1>
-<h1 th:text="${event}">Welcome to:</h1>
-<h2>Today's theme is:</h2>
-<h2 th:text="${theme.description}"></h2>
-<button onclick="window.location.href='/submission/upload';">Upload your submission</button>
-<button onclick="window.location.href='/collection';">Collection</button>
+<div style="overflow: auto">
+    <nav class="demo">
+        <a href="/" class="brand">
+            <span>Inktober 2024</span>
+        </a>
+        <span id="todayDate" class="navbar-date"></span>
+        <span th:text="'Today\'s theme: ' + ${theme.description}" class="navbar-theme">None!</span>
+        <div class="menu">
+            <a href="/collection" class="button warning">Gallery</a>
+        </div>
+    </nav>
+    <div class="main-content">
+        <h1 class="title">Today's theme is:</h1>
+        <p class="theme" th:text="${theme.description}"></p>
+        <div class="separator"></div>
+        <div th:if="${todaySubmission != null}" class="submission-details">
+            <h2 style="text-align: center;">Your submission:</h2>
+            <div class="submission-card">
+                <div th:if="${todaySubmission.image != null}">
+                    <img id="submissionImage"
+                         th:src="@{/submission/{id}/image(id=${todaySubmission.submissionId})}"
+                         alt="Submission Image"
+                         class="submission-image"/>
+                </div>
+                <p th:text="${todaySubmission.comment}"></p>
+            </div>
+        </div>
+        <div th:if="${todaySubmission == null}">
+            <label class="button uploadButton warning" for="modal_1">Upload your submission!</label>
+        </div>
+    </div>
+</div>
+
+<div class="modal">
+    <input id="modal_1" type="checkbox"/>
+    <label for="modal_1" class="overlay"></label>
+    <article>
+        <header>
+            <h3>Upload submission...</h3>
+            <label for="modal_1" class="close">&times;</label>
+        </header>
+        <section class="content" style="padding:40px;">
+            <div style="width: 500px;">
+                <label class="dropimage">
+                    <input id="fileInput" title="Drop image or click me" type="file">
+                </label>
+                <textarea id="commentInput" style="margin-top:20px;" placeholder="Comment..."></textarea>
+            </div>
+            <label>
+                <input type="checkbox" id="wasFunInput"/>
+                <span class="checkable">Was this theme cool, fun or inspirational?</span>
+            </label>
+            <p id="responseMessage" style="margin-top: 20px;"></p>
+        </section>
+        <footer>
+            <button id="uploadButtonYes" class="button warning" type="button">Upload!</button>
+            <label for="modal_1" class="button dangerous">Cancel</label>
+        </footer>
+    </article>
+</div>
+
+<div id="fullscreenModal" class="fullscreen-modal">
+    <img id="fullscreenImage" class="fullscreen-image" alt="Fullscreen Submission Image"/>
+</div>
+
 </body>
 </html>

@@ -30,6 +30,7 @@ public class SubmissionEntity {
     private long submissionId;
     private long uploadTimestamp;
     private String comment;
+    private boolean wasFun;
     @ToString.Exclude
     @Column(columnDefinition = "BLOB")
     private byte[] image;
