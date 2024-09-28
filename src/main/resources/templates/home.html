@@ -1,17 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="${event}"></title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picnic">
+    <th:block th:replace="header :: head"></th:block>
     <style>
-        body {
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            min-height: 100vh;
-            margin: 0;
-        }
-
         .main-content {
             margin-top: 50px;
             display: flex;
@@ -107,29 +98,9 @@
             width: 80%;
             margin: 30px 0;
         }
-
-        .navbar-date {
-            margin-top: 14px;
-            margin-left: 10px;
-            display: inline-block;
-            vertical-align: middle;
-        }
-
-        .navbar-theme {
-            margin-top: 14px;
-            margin-left: 10px;
-            display: inline-block;
-            vertical-align: middle;
-        }
     </style>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-            const today = new Date();
-            const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            const dateString = today.toLocaleDateString(undefined, options);
-            $('#todayDate').text(dateString);
-
             $('#fullscreenModal').hide();
             $('.dropimage').each(function() {
                 $(this).on('change', function(e) {
@@ -201,16 +172,7 @@
 
 <body>
 <div style="overflow: auto">
-    <nav class="demo">
-        <a href="/" class="brand">
-            <span>Inktober 2024</span>
-        </a>
-        <span id="todayDate" class="navbar-date"></span>
-        <span th:text="'Today\'s theme: ' + ${theme.description}" class="navbar-theme">None!</span>
-        <div class="menu">
-            <a href="/collection" class="button warning">Gallery</a>
-        </div>
-    </nav>
+    <th:block th:replace="header :: body"></th:block>
     <div class="main-content">
         <h1 class="title">Today's theme is:</h1>
         <p class="theme" th:text="${theme.description}"></p>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${event}"></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picnic">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+       .navbar-date {
+            margin-top: 14px;
+            margin-left: 10px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .navbar-theme {
+            margin-top: 14px;
+            margin-left: 10px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            const today = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const dateString = today.toLocaleDateString(undefined, options);
+            $('#todayDate').text(dateString);
+        });
+    </script>
+</head>
+
+<body>
+<nav class="demo">
+    <a href="/" class="brand">
+        <span>Inktober 2024</span>
+    </a>
+    <span id="todayDate" class="navbar-date"></span>
+    <span th:text="'Today\'s theme: ' + ${theme.description}" class="navbar-theme">None!</span>
+    <div class="menu">
+        <a href="/collection" class="button warning">Gallery</a>
+    </div>
+</nav>
+</body>
+</html>

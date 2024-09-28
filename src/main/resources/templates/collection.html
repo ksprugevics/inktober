@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <th:block th:replace="header :: head"></th:block>
     <title>Submission</title>
 </head>
 <body>
-<button onclick="window.location.href='/';">Back</button>
-<div th:each="sub: ${submissions}">
-    <h2 th:text="${sub.theme.description}"></h2>
-    <h3 th:text="${sub.comment}"></h3>
-    <h3 th:text="${sub.theme.dateFor}"></h3>
-    <img th:src="@{/submission/{id}/image(id=${sub.submissionId})}" alt="Submission Image"/>
+<div style="overflow: auto">
+    <th:block th:replace="header :: body"></th:block>
+    <button onclick="window.location.href='/';">Back</button>
+    <div th:each="sub: ${submissions}">
+        <h2 th:text="${sub.theme.description}"></h2>
+        <h3 th:text="${sub.comment}"></h3>
+        <h3 th:text="${sub.theme.dateFor}"></h3>
+        <img th:src="@{/submission/{id}/image(id=${sub.submissionId})}" alt="Submission Image"/>
+    </div>
 </div>
 </body>
 </html>
