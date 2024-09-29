@@ -59,7 +59,7 @@
         $(document).ready(function() {
             $('#fullscreenModal').hide();
 
-            $('#submissionImage').on('click', function() {
+            $('.submission-image').on('click', function() {
                 const imgSrc = $(this).attr('src');
                 $('#fullscreenImage').attr('src', imgSrc);
                 $('#fullscreenModal').fadeIn();
@@ -83,8 +83,7 @@
                 <div class="submission-card">
                     <span th:text="${sub.theme.dateFor}"></span>
                     <div th:if="${sub.image != null}">
-                        <img id="submissionImage"
-                             th:src="@{/submission/{id}/image(id=${sub.submissionId})}"
+                        <img th:src="@{/submission/{id}/image(id=${sub.submissionId})}"
                              alt="submission image"
                              class="submission-image"/>
                     </div>
