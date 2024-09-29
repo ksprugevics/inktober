@@ -22,9 +22,6 @@ public class ThemeService {
     @PostConstruct
     public void initializeThemes() {
         this.themes = themeRepository.findByEventEventId(eventConfig.activeEvent.id);
-        for (ThemeEntity theme : themes) {
-            System.out.println(theme);
-        }
     }
 
     public ThemeEntity getTodayTheme() {

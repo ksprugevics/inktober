@@ -3,21 +3,6 @@
 <head>
     <th:block th:replace="header :: head"></th:block>
     <style>
-        .main-content {
-            margin-top: 50px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            flex: 1;
-            padding-bottom: 20px;
-        }
-
-        .title {
-            font-size: 4em;
-            text-align: center;
-            font-weight: bold;
-        }
-
         .theme {
             font-size: 2.5em;
             text-align: center;
@@ -175,22 +160,29 @@
     <th:block th:replace="header :: body"></th:block>
     <div class="main-content">
         <h1 class="title">Today's theme is:</h1>
-        <p class="theme" th:text="${theme.description}"></p>
-        <div class="separator"></div>
-        <div th:if="${todaySubmission != null}" class="submission-details">
-            <h2 style="text-align: center;">Your submission:</h2>
-            <div class="submission-card">
-                <div th:if="${todaySubmission.image != null}">
-                    <img id="submissionImage"
-                         th:src="@{/submission/{id}/image(id=${todaySubmission.submissionId})}"
-                         alt="Submission Image"
-                         class="submission-image"/>
-                </div>
-                <p th:text="${todaySubmission.comment}"></p>
-            </div>
+        <div th:if="${theme != null}">
+            <p class="theme" th:text="${theme.description}"></p>
         </div>
-        <div th:if="${todaySubmission == null}">
-            <label class="button uploadButton warning" for="modal_1">Upload your submission!</label>
+        <div th:unless="${theme != null}">
+            <p class="theme" th:text="Nothing.."></p>
+        </div>
+        <div class="separator"></div>
+        <div th:if="${theme != null}">
+            <div th:if="${todaySubmission != null}" class="submission-details">
+                <h2 style="text-align: center;">Your submission:</h2>
+                <div class="submission-card">
+                    <div th:if="${todaySubmission.image != null}">
+                        <img id="submissionImage"
+                             th:src="@{/submission/{id}/image(id=${todaySubmission.submissionId})}"
+                             alt="Submission Image"
+                             class="submission-image"/>
+                    </div>
+                    <p th:text="${todaySubmission.comment}"></p>
+                </div>
+            </div>
+            <div th:if="${todaySubmission == null}">
+                <label class="button uploadButton warning" for="modal_1">Upload your submission!</label>
+            </div>
         </div>
     </div>
 </div>

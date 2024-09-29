@@ -25,6 +25,21 @@
             display: inline-block;
             vertical-align: middle;
         }
+
+        .main-content {
+            margin-top: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            padding-bottom: 20px;
+        }
+
+        .title {
+            font-size: 4em;
+            text-align: center;
+            font-weight: bold;
+        }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -43,7 +58,9 @@
         <span>Inktober 2024</span>
     </a>
     <span id="todayDate" class="navbar-date"></span>
-    <span th:text="'Today\'s theme: ' + ${theme.description}" class="navbar-theme">None!</span>
+    <span th:if="${theme != null}">
+        <span th:text="'Today\'s theme: ' + ${theme.description}" class="navbar-theme">None!</span>
+    </span>
     <div class="menu">
         <a href="/collection" class="button warning">Gallery</a>
     </div>

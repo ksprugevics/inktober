@@ -14,8 +14,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SubmissionService {
 
-    private final SubmissionRepository submissionRepository;
     private final ThemeService themeService;
+    private final SubmissionRepository submissionRepository;
 
     public SubmissionEntity getSubmission(long submissionId) {
         return submissionRepository.findById(submissionId).orElseThrow(() -> new IllegalArgumentException("Invalid submission Id:" + submissionId));
@@ -23,6 +23,10 @@ public class SubmissionService {
 
     public SubmissionEntity getTodaySubmission() {
         ThemeEntity todayTheme = themeService.getTodayTheme();
+        if (todayTheme == null) {
+            return null;
+        }
+
         List<SubmissionEntity> todaySubmission = submissionRepository.findByThemeThemeId(todayTheme.getThemeId());
         if (todaySubmission.isEmpty()) {
             return null;
@@ -30,7 +34,7 @@ public class SubmissionService {
         return todaySubmission.getFirst();
     }
 
-    public SubmissionEntity saveSubmission(String description, Boolean wasFun, MultipartFile file) throws IOException {
+    public void saveSubmission(String description, Boolean wasFun, MultipartFile file) throws IOException {
         if (!canSubmitToday()) {
             throw new RuntimeException("Submission already exists");
         }
@@ -45,10 +49,11 @@ public class SubmissionService {
         if (file != null) {
             submission.setImage(file.getBytes());
         }
-        return submissionRepository.save(submission);
+
+        submissionRepository.save(submission);
     }
 
-    public boolean canSubmitToday() {
+    private boolean canSubmitToday() {
         SubmissionEntity todaySubmission = getTodaySubmission();
         return todaySubmission == null;
     }

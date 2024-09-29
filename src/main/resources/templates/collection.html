@@ -3,17 +3,109 @@
 <head>
     <th:block th:replace="header :: head"></th:block>
     <title>Submission</title>
+    <style>
+        .submission-card {
+            font-size: 0.8em;
+            text-align: center;
+            font-weight: bold;
+            background-color: #f0f0f2;
+            border-radius: 10px;
+            width: 240px;
+            margin-bottom: 10px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-left: 5px;
+            padding-right: 5px;
+            word-wrap: break-word;
+            overflow: hidden;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .submission-image {
+            max-width: 200px;
+            height: auto;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+            max-height: 200px;
+        }
+
+        .fullscreen-modal {
+            display: none;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            height: calc(100% - 60px);
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: flex;
+        }
+
+        .fullscreen-image {
+            max-width: 90%;
+            max-height: 90%;
+            margin: auto;
+        }
+
+        .gallery-grid {
+            margin: 50px;
+        }
+    </style>
+    <script>
+        $(document).ready(function() {
+            $('#fullscreenModal').hide();
+
+            $('#submissionImage').on('click', function() {
+                const imgSrc = $(this).attr('src');
+                $('#fullscreenImage').attr('src', imgSrc);
+                $('#fullscreenModal').fadeIn();
+            });
+
+            $('#fullscreenModal').on('click', function() {
+                $(this).fadeOut();
+            });
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 <body>
 <div style="overflow: auto">
     <th:block th:replace="header :: body"></th:block>
-    <button onclick="window.location.href='/';">Back</button>
-    <div th:each="sub: ${submissions}">
-        <h2 th:text="${sub.theme.description}"></h2>
-        <h3 th:text="${sub.comment}"></h3>
-        <h3 th:text="${sub.theme.dateFor}"></h3>
-        <img th:src="@{/submission/{id}/image(id=${sub.submissionId})}" alt="Submission Image"/>
+    <h1 class="title" th:text="'Collection: ' + ${event}"></h1>
+    <div class="gallery-grid">
+        <div class="flex five demo">
+            <div th:each="sub: ${submissions}">
+                <div class="submission-card">
+                    <span th:text="${sub.theme.dateFor}"></span>
+                    <div th:if="${sub.image != null}">
+                        <img id="submissionImage"
+                             th:src="@{/submission/{id}/image(id=${sub.submissionId})}"
+                             alt="submission image"
+                             class="submission-image"/>
+                    </div>
+                    <div th:unless="${sub.image != null}">
+                        <img id="submissionImageAlt"
+                             src="https://coffective.com/wp-content/uploads/2018/06/default-featured-image.png.jpg"
+                             alt="submission image"
+                             class="submission-image"/>
+                    </div>
+                    <p style="font-style: italic" th:text="${sub.theme.description}"></p>
+                    <p th:unless=${sub.comment.isEmpty()} th:text="${sub.comment}"></p>
+                    <p th:if=${sub.comment.isEmpty()}>No comment</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<div id="fullscreenModal" class="fullscreen-modal">
+    <img id="fullscreenImage" class="fullscreen-image" alt="Fullscreen Submission Image"/>
+</div>
+
 </body>
 </html>
