@@ -1,0 +1,15 @@
+version: '3'
+services:
+  app:
+    image: inktober-img
+    build: .
+    container_name: inktober
+    ports:
+      - "8081:8081"
+    volumes:
+      - sqlite-data:/app/sqlite-data
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:sqlite:/app/sqlite-data/inktober2024.db
+
+volumes:
+  sqlite-data:
