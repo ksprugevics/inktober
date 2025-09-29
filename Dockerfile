@@ -5,7 +5,7 @@ FROM openjdk:21-jdk-slim
 WORKDIR /app
 
 # Copy the packaged Spring Boot JAR file into the container
-COPY target/inktober-1.0-SNAPSHOT.jar app.jar
+COPY target/inktober-1.1-SNAPSHOT.jar app.jar
 
 # Expose the application port
 EXPOSE 8081
