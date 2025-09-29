@@ -2,6 +2,7 @@ package org.inktober.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.inktober.config.EventConfig;
+import org.inktober.domain.EventClassifier;
 import org.inktober.service.CollectionService;
 import org.inktober.service.ThemeService;
 import org.springframework.stereotype.Controller;
@@ -26,9 +27,10 @@ public class CollectionController {
         }
 
         try {
-            model.addAttribute("event", eventConfig.activeEvent.eventName);
+            model.addAttribute("event", EventClassifier.byId(id).eventName);
             model.addAttribute("theme", themeService.getTodayTheme());
             model.addAttribute("submissions", collectionService.getSubmissionsByEvent(id));
+
             return "collection";
         } catch (IllegalArgumentException e) {
             return "Error";

@@ -22,4 +22,14 @@ public enum EventClassifier {
 
         return NONE;
     }
+
+    public static EventClassifier byId(int id) {
+        for (EventClassifier value : EventClassifier.values()) {
+            if (value.id == id) {
+                return value;
+            }
+        }
+
+        return NONE;
+    }
 }

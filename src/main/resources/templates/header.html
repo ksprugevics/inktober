@@ -55,15 +55,17 @@
 <body>
 <nav class="demo">
     <a href="/" class="brand">
-        <span>Inktober 2024</span>
+        <span>Inktober 2025</span>
     </a>
     <span id="todayDate" class="navbar-date"></span>
     <span th:if="${theme != null}">
         <span th:text="'Today\'s theme: ' + ${theme.description}" class="navbar-theme">None!</span>
     </span>
     <div class="menu">
-        <a href="/collection" class="button warning">Gallery</a>
+        <a th:href="@{/collection/1}" class="">2024</a>
+        <a th:href="@{/collection/2}" class="">2025</a>
     </div>
+
 </nav>
 </body>
 </html>
