@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -42,6 +44,26 @@ public class SubmissionService {
         SubmissionEntity submission = SubmissionEntity.builder()
                 .uploadTimestamp(System.currentTimeMillis())
                 .theme(themeService.getTodayTheme())
+                .comment(description)
+                .wasFun(wasFun)
+                .build();
+
+        if (file != null) {
+            submission.setImage(file.getBytes());
+        }
+
+        submissionRepository.save(submission);
+    }
+
+    public void saveSubmission(String description, Boolean wasFun, LocalDate targetDate, MultipartFile file) throws IOException {
+        Optional<ThemeEntity> themeOpt = themeService.getTargetDateTheme(targetDate);
+        if (themeOpt.isEmpty()) {
+            throw new RuntimeException("Theme not found");
+        }
+
+        SubmissionEntity submission = SubmissionEntity.builder()
+                .uploadTimestamp(System.currentTimeMillis())
+                .theme(themeOpt.get())
                 .comment(description)
                 .wasFun(wasFun)
                 .build();

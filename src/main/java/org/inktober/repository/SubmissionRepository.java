@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface SubmissionRepository extends JpaRepository<SubmissionEntity, Long> {
 
-    @Query("SELECT s FROM SubmissionEntity s WHERE s.theme.event.eventId = :eventId")
+    @Query("SELECT s FROM SubmissionEntity s WHERE s.theme.event.eventId = :eventId ORDER BY s.theme.dateFor")
     List<SubmissionEntity> findByEventId(@Param("eventId") long eventId);
     List<SubmissionEntity> findByThemeThemeId(@Param("themeId") long themeId);
 }

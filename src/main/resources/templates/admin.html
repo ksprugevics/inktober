@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="header :: head"></th:block>
+    <style>
+        .theme {
+            font-size: 2.5em;
+            text-align: center;
+            font-weight: bold;
+            background-color: #f0f0f2;
+            border-radius: 10px;
+            margin-bottom: 50px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            width: 700px;
+        }
+
+        .uploadButton {
+            font-size: 1.5em;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .submission-details {
+            font-size: 1.5em;
+            text-align: center;
+        }
+
+        .disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .success-message {
+            color: green;
+        }
+
+        .error-message {
+            color: red;
+        }
+
+        .submission-card {
+            font-size: 1em;
+            text-align: center;
+            font-weight: bold;
+            background-color: #f0f0f2;
+            border-radius: 10px;
+            margin-bottom: 50px;
+            padding-top: 30px;
+            padding-bottom: 30px;
+            width: 700px;
+        }
+
+        .submission-image {
+            max-width: 500px;
+            height: auto;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .fullscreen-modal {
+            display: none;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            height: calc(100% - 60px);
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: flex;
+        }
+
+        .fullscreen-image {
+            max-width: 90%;
+            max-height: 90%;
+            margin: auto;
+        }
+
+        .separator {
+            border-top: 2px solid #ccc;
+            width: 80%;
+            margin: 30px 0;
+        }
+    </style>
+    <script>
+        $(document).ready(function() {
+            $('#fullscreenModal').hide();
+            $('.dropimage').each(function() {
+                $(this).on('change', function(e) {
+                    var inputfile = $(this)[0];
+                    var reader = new FileReader();
+                    reader.onloadend = function() {
+                        $(inputfile).css('background-image', 'url(' + reader.result + ')');
+                    }
+                    reader.readAsDataURL(e.target.files[0]);
+                });
+            });
+
+            $('#uploadButtonYes').on('click', async function() {
+                $('#uploadButtonYes').addClass('disabled').prop('disabled', true);
+
+                const fileInput = $('#fileInput')[0];
+                const commentInput = $('#commentInput').val().trim();
+                const funCheckbox = $('#wasFunInput').is(':checked');
+                const date = $('#dateInput').val();
+                console.log(date);
+                const file = fileInput.files[0];
+
+                if (!file && commentInput === "") {
+                    $('#responseMessage').removeClass('success-message').addClass('error-message').text("Please provide either a file or a comment.");
+                    $('#uploadButtonYes').removeClass('disabled').prop('disabled', false);
+                    return;
+                }
+
+                const formData = new FormData();
+                if (file) {
+                    formData.append('file', file);
+                }
+                formData.append('comment', commentInput);
+                formData.append('wasFun', funCheckbox);
+                formData.append('date', date);
+
+                try {
+                    const response = await fetch('/submission/upload', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        $('#responseMessage').removeClass('error-message').addClass('success-message').text("Upload successful!");
+                        setTimeout(() => {
+                            location.reload();
+                        }, 2000);
+                    } else {
+                        $('#responseMessage').removeClass('success-message').addClass('error-message').text(result.message || "Upload failed.");
+                        $('#uploadButtonYes').removeClass('disabled').prop('disabled', false);
+                    }
+                } catch (error) {
+                    $('#responseMessage').removeClass('success-message').addClass('error-message').text("Upload failed.");
+                    $('#uploadButtonYes').removeClass('disabled').prop('disabled', false);
+                }
+            });
+
+            $('#submissionImage').on('click', function() {
+                const imgSrc = $(this).attr('src');
+                $('#fullscreenImage').attr('src', imgSrc);
+                $('#fullscreenModal').fadeIn();
+            });
+
+            $('#fullscreenModal').on('click', function() {
+                $(this).fadeOut();
+            });
+        });
+    </script>
+</head>
+
+<body>
+<div style="overflow: auto">
+    <th:block th:replace="header :: body"></th:block>
+    <div class="main-content">
+        <h1 class="title">Upload</h1>
+            <section class="content" style="padding:40px;">
+                <label>
+                    <span>Target date</span>
+                    <input type="date" id="dateInput">
+                </label>
+                <div style="width: 500px;">
+                    <label class="dropimage">
+                        <input id="fileInput" title="Drop image or click me" type="file">
+                    </label>
+                    <textarea id="commentInput" style="margin-top:20px;" placeholder="Comment..."></textarea>
+                </div>
+                <label>
+                    <input type="checkbox" id="wasFunInput"/>
+                    <span class="checkable">Was this theme cool, fun or inspirational?</span>
+                </label>
+                <p id="responseMessage" style="margin-top: 20px;"></p>
+            </section>
+            <footer>
+                <button id="uploadButtonYes" class="button warning" type="button">Upload!</button>
+                <label for="modal_1" class="button dangerous">Cancel</label>
+            </footer>
+    </div>
+</div>
+
+<div class="modal">
+    <input id="modal_1" type="checkbox"/>
+    <label for="modal_1" class="overlay"></label>
+
+</div>
+</body>
+</html>

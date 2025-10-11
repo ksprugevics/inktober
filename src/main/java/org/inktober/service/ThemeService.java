@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,13 +26,13 @@ public class ThemeService {
     }
 
     public ThemeEntity getTodayTheme() {
-        LocalDate todayDate = LocalDate.now();
-        for (ThemeEntity theme : themes) {
-            if (theme.getDateFor().equals(todayDate)) {
-                return theme;
-            }
-        }
+        var themeOpt = getTargetDateTheme(LocalDate.now());
+        return themeOpt.orElse(null);
+    }
 
-        return null;
+    public Optional<ThemeEntity> getTargetDateTheme(LocalDate date) {
+        return themes.stream()
+                .filter(th -> th.getDateFor().equals(date))
+                .findFirst();
     }
 }
