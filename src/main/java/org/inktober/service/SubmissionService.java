@@ -60,16 +60,23 @@ public class SubmissionService {
         if (themeOpt.isEmpty()) {
             throw new RuntimeException("Theme not found");
         }
+        var theme = themeOpt.get();
 
         SubmissionEntity submission = SubmissionEntity.builder()
                 .uploadTimestamp(System.currentTimeMillis())
-                .theme(themeOpt.get())
+                .theme(theme)
                 .comment(description)
                 .wasFun(wasFun)
                 .build();
 
         if (file != null) {
             submission.setImage(file.getBytes());
+        }
+
+        var existingSubmissions = submissionRepository.findByThemeThemeId(theme.getThemeId());
+
+        if (!existingSubmissions.isEmpty()) {
+            submissionRepository.deleteById(existingSubmissions.getFirst().getSubmissionId());
         }
 
         submissionRepository.save(submission);
