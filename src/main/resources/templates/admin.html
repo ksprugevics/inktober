@@ -123,7 +123,7 @@
                 formData.append('date', date);
 
                 try {
-                    const response = await fetch('/submission/upload', {
+                    const response = await fetch('/admin/upload', {
                         method: 'POST',
                         body: formData
                     });
