@@ -1,0 +1,34 @@
+INSERT INTO event (event_id, name, start_date, end_date)
+VALUES (3, "Inktober 2026", date("2026-10-01"), date("2026-10-31"));
+
+INSERT INTO theme (description, date_for, event_id) VALUES ("Apple", "2026-10-01", 3);
+INSERT INTO theme (description, date_for, event_id) VALUES ("Relic", "2026-10-02", 3);
+INSERT INTO theme (description, date_for, event_id) VALUES ("Miniature", "2026-10-03", 3);
+INSERT INTO theme (description, date_for, event_id) VALUES ("Cactus", "2026-10-04", 3);
+INSERT INTO theme (description, date_for, event_id) VALUES ("Smack", "2026-10-05", 3);
+INSERT INTO theme (description, date_for, event_id) VALUES ("Ogre", "2026-10-06", 3);
+INSERT INTO theme (description, date_for, event_id) VALUES ("Panic", "2026-10-07", 3);
+INSERT INTO theme (description, date_for, event_id) VALUES ("Stinky", "2026-10-08", 3);
+INSERT INTO theme (description, date_for, event_id) VALUES ("Ram", "2026-10-09", 3);
+INSERT INTO theme (description, date_for, event_id) VALUES ("Mystical", "2026-10-10", 3);
+INSERT INTO theme (description, date_for, event_id) VALUES ("Rescue", "2026-10-11", 3);
+INSERT INTO theme (description, date_for, event_id) VALUES ("Toss", "2026-10-12", 3);
+INSERT INTO theme (description, date_for, event_id) VALUES ("Flimsy", "2026-10-13", 3);
+INSERT INTO theme (description, date_for, event_id) VALUES ("Lady", "2026-10-14", 3);
+INSERT INTO theme (description, date_for, event_id) VALUES ("Hooray", "2026-10-15", 3);
+INSERT INTO theme (description, date_for, event_id) VALUES ("Gangly", "2026-10-16", 3);
+INSERT INTO theme (description, date_for, event_id) VALUES ("Contraption", "2026-10-17", 3);
+INSERT INTO theme (description, date_for, event_id) VALUES ("Flightless", "2026-10-18", 3);
+INSERT INTO theme (description, date_for, event_id) VALUES ("Confused", "2026-10-19", 3);
+INSERT INTO theme (description, date_for, event_id) VALUES ("Lounge", "2026-10-20", 3);
+INSERT INTO theme (description, date_for, event_id) VALUES ("Hero", "2026-10-21", 3);
+INSERT INTO theme (description, date_for, event_id) VALUES ("Beacon", "2026-10-22", 3);
+INSERT INTO theme (description, date_for, event_id) VALUES ("Dapper", "2026-10-23", 3);
+INSERT INTO theme (description, date_for, event_id) VALUES ("Bake", "2026-10-24", 3);
+INSERT INTO theme (description, date_for, event_id) VALUES ("Fracture", "2026-10-25", 3);
+INSERT INTO theme (description, date_for, event_id) VALUES ("Zip", "2026-10-26", 3);
+INSERT INTO theme (description, date_for, event_id) VALUES ("Dumb", "2026-10-27", 3);
+INSERT INTO theme (description, date_for, event_id) VALUES ("Trophy", "2026-10-28", 3);
+INSERT INTO theme (description, date_for, event_id) VALUES ("Tusk", "2026-10-29", 3);
+INSERT INTO theme (description, date_for, event_id) VALUES ("Cookie", "2026-10-30", 3);
+INSERT INTO theme (description, date_for, event_id) VALUES ("Flex", "2026-10-31", 3);
