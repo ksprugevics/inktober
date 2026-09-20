@@ -9,7 +9,7 @@ services:
     volumes:
       - sqlite-data:/app/sqlite-data
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:sqlite:/app/sqlite-data/inktober2024.db
+      - SPRING_DATASOURCE_URL=jdbc:sqlite:/app/sqlite-data/inktober.db
 
 volumes:
   sqlite-data:
